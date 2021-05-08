@@ -1,16 +1,18 @@
 package kaan.demo.spring.crudapp.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 @Document(collection = "users")
-@Getter @Setter
+@Data
 public class User {
 
 	@Id
-	public String id;
-	public String firstName;
-	public String lastName;
+	private int id;
+	private String name;
+	private List<Post> posts;
 }
