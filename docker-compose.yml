@@ -3,7 +3,7 @@ version: '3.6'
 
 services:
   my-mongodb:
-    image: mongo:4.2.3-bionic
+    image: mongo:4.4.2
     container_name: my-mongodb
     ports:
       - 27017:27017

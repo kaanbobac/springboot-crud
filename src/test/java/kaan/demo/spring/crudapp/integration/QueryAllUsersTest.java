@@ -4,53 +4,36 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+import kaan.demo.spring.crudapp.model.Post;
 import kaan.demo.spring.crudapp.model.User;
-import kaan.demo.spring.crudapp.repo.UserRepository;
 
 @AutoConfigureMockMvc
-@Testcontainers
-@SpringBootTest
-@ActiveProfiles("test")
-public class QueryAllUsersTest {
-	@Autowired
-	private UserRepository userRepo;
-	@Autowired
-	private MockMvc mockMvc;
-	@Container
-	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.2");
-
-	@DynamicPropertySource
-	static void setProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+public class QueryAllUsersTest extends BaseTestContainer {
+	@BeforeEach
+	void init() {
+		Post post1 = Post.builder().id(0).description("First Post").build();
+		List<Post> posts = new ArrayList<>();
+		posts.add(post1);
+		User first = User.builder().id(0).name("First User").posts(posts).build();
+		userRepo.save(first);
 	}
 
 	@Test
-	public void query_all_users() throws Exception {
-		mongoDBContainer.start();
-		User first = new User();
-		first.setId(0);
-		first.setName("first User");
-		first.setPosts(null);
-		userRepo.save(first);
-		mockMvc.perform(get("/users")).andExpect(status().isOk()).andExpect(content()
-				.string(org.hamcrest.Matchers.containsString("[{\"id\":0,\"name\":\"first User\",\"posts\":null}]")));
+	void query_all_users() throws Exception {
+		mockMvc.perform(get("/users")).andExpect(status().isOk()).andExpect(
+				content().json("[{'id':0,'name':'First User','posts':[{'id':0,'description':'First Post'}]}]"));
 	}
 
 	@AfterEach
-	private void after() {
+	void after() {
 		userRepo.deleteAll();
 	}
 }
