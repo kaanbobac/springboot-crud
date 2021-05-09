@@ -32,7 +32,8 @@ public class SaveUserTest extends BaseTestContainer {
 
 	@Test
 	void query_one_user() throws Exception {
-		mockMvc.perform(post("/add-user").contentType(APPLICATION_JSON_UTF8).content(json)).andExpect(status().isOk());
+		mockMvc.perform(post("/add-user").contentType(APPLICATION_JSON_UTF8).content(json))
+				.andExpect(status().isCreated());
 	}
 
 	@AfterEach

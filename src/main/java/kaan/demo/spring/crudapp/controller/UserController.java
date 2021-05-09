@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kaan.demo.spring.crudapp.exception.UserNotFoundException;
 import kaan.demo.spring.crudapp.model.Post;
 import kaan.demo.spring.crudapp.model.User;
 import kaan.demo.spring.crudapp.service.UserService;
@@ -27,12 +28,15 @@ public class UserController {
 
 	@GetMapping("/user")
 	private ResponseEntity<User> getOneUser(@RequestParam int id) {
+		if (userService.getOneUser(id) == null)
+			throw new UserNotFoundException("id: " + id + " not found");
 		return new ResponseEntity<User>(userService.getOneUser(id), HttpStatus.OK);
 	}
 
 	@PostMapping("/add-user")
 	private ResponseEntity saveOneUser(@RequestBody User u) {
-		return new ResponseEntity(HttpStatus.OK);
+		userService.saveUser(u);
+		return new ResponseEntity(HttpStatus.CREATED);
 	}
 
 	@GetMapping("/query-user-posts")
