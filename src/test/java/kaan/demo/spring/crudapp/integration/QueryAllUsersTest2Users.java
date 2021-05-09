@@ -16,7 +16,7 @@ import kaan.demo.spring.crudapp.model.Post;
 import kaan.demo.spring.crudapp.model.User;
 
 @AutoConfigureMockMvc
-public class QueryAllUsersTest2 extends BaseTestContainer {
+public class QueryAllUsersTest2Users extends BaseTestContainer {
 	@BeforeEach
 	private void init() {
 		Post post1 = Post.builder().id(0).description("First Post").build();
