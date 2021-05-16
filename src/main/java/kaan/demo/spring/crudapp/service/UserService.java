@@ -29,4 +29,7 @@ public class UserService {
 	public List<Post> queryUserPosts(int userId) {
 		return userRepo.findById(userId).orElse(null).getPosts();
 	}
+	public void removeUser(int id) {
+		userRepo.deleteById(id);
+	}
 }
