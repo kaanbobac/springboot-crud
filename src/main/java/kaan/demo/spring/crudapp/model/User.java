@@ -2,6 +2,8 @@ package kaan.demo.spring.crudapp.model;
 
 import java.util.List;
 
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,6 +21,7 @@ public class User {
 
 	@Id
 	private int id;
+	@Size(min=2)
 	private String name;
 	private List<Post> posts;
 }

@@ -2,6 +2,8 @@ package kaan.demo.spring.crudapp.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,7 @@ public class UserController {
 	}
 
 	@PostMapping("/add-user")
-	private ResponseEntity saveOneUser(@RequestBody User u) {
+	private ResponseEntity saveOneUser(@Valid @RequestBody User u) {
 		userService.saveUser(u);
 		return new ResponseEntity(HttpStatus.CREATED);
 	}
