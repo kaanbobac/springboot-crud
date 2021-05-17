@@ -30,10 +30,10 @@ public class UserController {
 	}
 
 	@GetMapping("/user")
-	private ResponseEntity<User> getOneUser(@RequestParam int id) {
-		if (userService.getOneUser(id) == null)
-			throw new UserNotFoundException("id: " + id + " not found");
-		return new ResponseEntity<User>(userService.getOneUser(id), HttpStatus.OK);
+	private ResponseEntity<User> getOneUser(@RequestParam String email) {
+		if (userService.getOneUser(email) == null)
+			throw new UserNotFoundException("email " + email + " not found");
+		return new ResponseEntity<User>(userService.getOneUser(email), HttpStatus.OK);
 	}
 
 	@PostMapping("/add-user")
@@ -43,13 +43,14 @@ public class UserController {
 	}
 
 	@GetMapping("/query-user-posts")
-	private ResponseEntity<List<Post>> queryAllPostsofAUser(@RequestParam int userId) {
-		return new ResponseEntity<List<Post>>(userService.queryUserPosts(userId), HttpStatus.OK);
+	private ResponseEntity<List<Post>> queryAllPostsofAUser(@RequestParam String email) {
+		return new ResponseEntity<List<Post>>(userService.queryUserPosts(email), HttpStatus.OK);
 	}
 	@DeleteMapping("/remove-user")
-	private ResponseEntity removeUser(@RequestParam int id) {
-		if (userService.getOneUser(id) == null)
-			throw new UserNotFoundException("id: " + id + " not found");
+	private ResponseEntity removeUser(@RequestParam String email) {
+		if (userService.getOneUser(email) == null)
+			throw new UserNotFoundException("email: " + email + " not found");
+		userService.removeUser(email);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 }

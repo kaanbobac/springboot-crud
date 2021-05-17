@@ -19,17 +19,17 @@ import kaan.demo.spring.crudapp.model.User;
 public class QueryUserNotExist extends BaseTestContainer {
 	@BeforeEach
 	void init() {
-		Post post1 = Post.builder().id(0).description("First Post").build();
+		Post post1 = Post.builder().description("First Post").build();
 		List<Post> posts = new ArrayList<>();
 		posts.add(post1);
-		User first = User.builder().id(0).name("First User").posts(posts).build();
+		User first = User.builder().email("mymail").posts(posts).build();
 		userRepo.save(first);
 	}
 
 	@Test
 	void query_one_user() throws Exception {
-		mockMvc.perform(get("/user?id=10")).andExpect(status().isNotFound())
-				.andExpect(content().json("{'message':'id: 10 not found','details':'uri=/user\'}"));
+		mockMvc.perform(get("/user?email=notexistmail")).andExpect(status().isNotFound())
+				.andExpect(content().json("{'message':'email notexistmail not found','details':'uri=/user\'}"));
 	}
 
 	@AfterEach

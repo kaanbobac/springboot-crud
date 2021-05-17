@@ -18,18 +18,18 @@ public class UserService {
 		return userRepo.findAll();
 	}
 
-	public User getOneUser(int id) {
-		return userRepo.findById(id).orElse(null);
+	public User getOneUser(String email) {
+		return userRepo.findByEmail(email);
 	}
 
 	public void saveUser(User u) {
 		userRepo.save(u);
 	}
 
-	public List<Post> queryUserPosts(int userId) {
-		return userRepo.findById(userId).orElse(null).getPosts();
+	public List<Post> queryUserPosts(String email) {
+		return userRepo.findByEmail(email).getPosts();
 	}
-	public void removeUser(int id) {
-		userRepo.deleteById(id);
+	public void removeUser(String email) {
+		userRepo.deleteByEmail(email);
 	}
 }

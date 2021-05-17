@@ -19,17 +19,17 @@ import kaan.demo.spring.crudapp.model.User;
 public class QueryAllUsersTest extends BaseTestContainer {
 	@BeforeEach
 	void init() {
-		Post post1 = Post.builder().id(0).description("First Post").build();
+		Post post1 = Post.builder().description("First Post").build();
 		List<Post> posts = new ArrayList<>();
 		posts.add(post1);
-		User first = User.builder().id(0).name("First User").posts(posts).build();
+		User first = User.builder().email("First User").posts(posts).build();
 		userRepo.save(first);
 	}
 
 	@Test
 	void query_all_users() throws Exception {
 		mockMvc.perform(get("/users")).andExpect(status().isOk()).andExpect(
-				content().json("[{'id':0,'name':'First User','posts':[{'id':0,'description':'First Post'}]}]"));
+				content().json("[{'email':'First User','posts':[{'description':'First Post'}]}]"));
 	}
 
 	@AfterEach

@@ -25,7 +25,7 @@ public class SaveUserNotValidNameTest extends BaseTestContainer {
 
 	@BeforeEach
 	void init() throws JsonProcessingException {
-		User user = User.builder().name("M").build();
+		User user = User.builder().email("M").build();
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		json = ow.writeValueAsString(user);
 	}

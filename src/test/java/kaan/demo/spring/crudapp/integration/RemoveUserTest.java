@@ -27,14 +27,14 @@ public class RemoveUserTest extends BaseTestContainer{
 
 	@BeforeEach
 	void init() throws JsonProcessingException {
-		Post post1 = Post.builder().id(0).description("First Post").build();
+		Post post1 = Post.builder().description("First Post").build();
 		List<Post> posts1 = new ArrayList<>();
 		posts1.add(post1);
-		Post post2 = Post.builder().id(1).description("Second Post").build();
+		Post post2 = Post.builder().description("Second Post").build();
 		List<Post> posts2 = new ArrayList<>();
 		posts2.add(post2);
-		User first = User.builder().id(0).name("First User").posts(posts1).build();
-		User second = User.builder().id(1).name("Second User").posts(posts2).build();
+		User first = User.builder().email("myemail").posts(posts1).build();
+		User second = User.builder().email("Second User").posts(posts2).build();
 		List<User> users = new ArrayList<>();
 		users.add(first);
 		users.add(second);
@@ -43,7 +43,7 @@ public class RemoveUserTest extends BaseTestContainer{
 
 	@Test
 	void remove_one_user() throws Exception {
-		mockMvc.perform(delete("/remove-user?id=0"))
+		mockMvc.perform(delete("/remove-user?email=myemail"))
 				.andExpect(status().is2xxSuccessful());
 	}
 
